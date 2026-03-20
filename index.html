@@ -1,247 +1,271 @@
 <!DOCTYPE html>
 <html lang="fr" class="no-js">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Mathéo Crepieux</title>
-    <link rel="stylesheet" href="static/styles.css">
+    <link rel="stylesheet" href="static/css/styles.css">
 </head>
+
 <body id="top">
 
-<div class="terminal-window">
-    <div class="terminal-header">
-        <div class="terminal-buttons">
-            <div class="terminal-button btn-close"></div>
-            <div class="terminal-button btn-min"></div>
-            <div class="terminal-button btn-max"></div>
+    <div class="terminal-window">
+        <div class="terminal-header">
+            <div class="terminal-buttons">
+                <div class="terminal-button btn-close"></div>
+                <div class="terminal-button btn-min"></div>
+                <div class="terminal-button btn-max"></div>
+            </div>
+            <div class="terminal-title">matheo@linux: /home/matheo/portfolio</div>
         </div>
-        <div class="terminal-title">matheo@linux: /home/matheo/portfolio</div>
+
+        <div class="terminal-body" id="terminal-content">
+
+            <!-- Intro -->
+            <div class="prompt line" id="intro" style="animation-delay: 0.1s">
+                <span class="user">matheo</span><span class="at">@</span><span class="host">linux</span>:<span
+                    class="dir">~/portfolio</span><span class="char">$</span>
+                <span class="command">whoami</span>
+            </div>
+            <div class="output line" style="animation-delay: 0.3s">
+                Bonjour<br>
+                <h1>Je suis Mathéo Crepieux</h1>
+                un étudiant à l'IUT de Béthune
+
+                <div class="image-container">
+                    <img src="static/1000001125.jpg" alt="Profile Mathéo">
+                </div>
+                <p>
+                    <a href="#about">[ à propos de moi ]</a> &nbsp;&nbsp;
+                    <a href="#footer">[ Contact ]</a>
+                </p>
+            </div>
+
+            <!-- About -->
+            <div class="prompt line" id="about" style="animation-delay: 0.5s">
+                <span class="user">matheo</span><span class="at">@</span><span class="host">linux</span>:<span
+                    class="dir">~/portfolio</span><span class="char">$</span>
+                <span class="command">cat cv.txt</span>
+            </div>
+            <div class="output line" style="animation-delay: 0.7s">
+                <h2>Mon CV</h2>
+                <p>
+                    Étudiant à l'IUT de Béthune en réseau et Télécom (R&T).<br>
+                    Suite à la réussite de mon Bac professionnelle en système numérique,<br>
+                    j'aimerais partir en alternance en tant que technicien réseau avec<br>
+                    possibilité de devenir <strong>Administrateur réseau</strong>.
+                </p>
+
+                <h3>Mon parcours</h3>
+                <p>
+                    Suite à l'obtention de mon brevet avec mention,<br>
+                    je suis parti en Bac Professionnel SN (système numérique)<br>
+                    étant le meilleur de ma promotion, je suis parti en BUT R&T (Réseau et télécom)<br>
+                    pour pousser mes étude. Grace a mon Bac Professionnel,<br>
+                    j'ai effectué plusieurs stage dont :
+                </p>
+                <ul class="list">
+                    <li><strong>1 mois</strong> à BM-Tech en tant que technicien réseau.</li>
+                    <li><strong>3 stages de 5 semaines</strong> a l'Hôpital de Riaumont en tant que technicien
+                        informatique.</li>
+                </ul>
+            </div>
+
+            <!-- Competence -->
+            <div class="prompt line" style="animation-delay: 0.9s">
+                <span class="user">matheo</span><span class="at">@</span><span class="host">linux</span>:<span
+                    class="dir">~/portfolio</span><span class="char">$</span>
+                <span class="command">ls -la skills/</span>
+            </div>
+            <div class="output line" style="animation-delay: 1.1s">
+                <h2>compétence</h2>
+                <div class="dir-item">
+                    <div class="dir-name">Télécom</div>
+                    <div class="dir-desc">peu d'expérience</div>
+                </div>
+                <div class="dir-item">
+                    <div class="dir-name">Cisco</div>
+                    <div class="dir-desc">Packet Tracer maîtriser et connaissance du CLI</div>
+                </div>
+                <div class="dir-item">
+                    <div class="dir-name">Linux</div>
+                    <div class="dir-desc">Connaissance des commandes basique</div>
+                </div>
+                <div class="dir-item">
+                    <div class="dir-name">HTML</div>
+                    <div class="dir-desc">connaissance moyenne</div>
+                </div>
+                <div class="dir-item">
+                    <div class="dir-name">Python</div>
+                    <div class="dir-desc">tres peu de connaissance</div>
+                </div>
+            </div>
+
+            <!-- Objectif -->
+            <div class="prompt line" style="animation-delay: 1.3s">
+                <span class="user">matheo</span><span class="at">@</span><span class="host">linux</span>:<span
+                    class="dir">~/portfolio</span><span class="char">$</span>
+                <span class="command">cat objectives.md</span>
+            </div>
+            <div class="output line" style="animation-delay: 1.5s">
+                <h2>Objectif</h2>
+                <div class="dir-item">
+                    <div class="dir-name">Télécom</div>
+                    <div class="dir-desc">connaître tous les câblages et pouvoir effectuer des calculs poussés</div>
+                </div>
+                <div class="dir-item">
+                    <div class="dir-name">Cisco</div>
+                    <div class="dir-desc">Connaissance absolue de Packet tracer et du CLI</div>
+                </div>
+                <div class="dir-item">
+                    <div class="dir-name">Linux</div>
+                    <div class="dir-desc">Connaissance absolue des commandes et capacité a créé des serveur en tout
+                        type.</div>
+                </div>
+                <div class="dir-item">
+                    <div class="dir-name">HTML</div>
+                    <div class="dir-desc">création de site poussé</div>
+                </div>
+                <div class="dir-item">
+                    <div class="dir-name">Python</div>
+                    <div class="dir-desc">création de script poussé</div>
+                </div>
+            </div>
+
+            <!-- Qualité -->
+            <div class="prompt line" style="animation-delay: 1.7s">
+                <span class="user">matheo</span><span class="at">@</span><span class="host">linux</span>:<span
+                    class="dir">~/portfolio</span><span class="char">$</span>
+                <span class="command">cat qualities.txt</span>
+            </div>
+            <div class="output line" style="animation-delay: 1.9s">
+                <h2>Qualité</h2>
+                <ul class="list">
+                    <li>Autonome</li>
+                    <li>Cherche a comprendre.</li>
+                    <li>Ne s'arrête pas à un échec.</li>
+                    <li>Aide les autres.</li>
+                    <li>Rigueur</li>
+                    <li>Sociable</li>
+                </ul>
+            </div>
+
+            <!-- Hobby -->
+            <div class="prompt line" id="hobby" style="animation-delay: 2.1s">
+                <span class="user">matheo</span><span class="at">@</span><span class="host">linux</span>:<span
+                    class="dir">~/portfolio</span><span class="char">$</span>
+                <span class="command">ls -l hobbies/</span>
+            </div>
+            <div class="output line" style="animation-delay: 2.3s">
+                <h2>Hobby</h2>
+                <div class="dir-item">
+                    <div class="dir-name">Informatique</div>
+                    <div class="dir-desc">L'informatique me passionne, j'y consacre une petite partie de mon temps
+                        libre.</div>
+                </div>
+                <div class="dir-item">
+                    <div class="dir-name">Jeu Video</div>
+                    <div class="dir-desc">J'apprécie beaucoup jouer au jeu vidéo.</div>
+                </div>
+                <div class="dir-item">
+                    <div class="dir-name">Manga</div>
+                    <div class="dir-desc">En lire me plaît énormément j'en recherche toujours de nouveau.</div>
+                </div>
+                <div class="dir-item">
+                    <div class="dir-name">Musique</div>
+                    <div class="dir-desc">J'aime écouter de la musique et apprendre à jouer de nouveaux instruments.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Compétences recherchées -->
+            <div class="prompt line" id="works" style="animation-delay: 2.5s">
+                <span class="user">matheo</span><span class="at">@</span><span class="host">linux</span>:<span
+                    class="dir">~/portfolio</span><span class="char">$</span>
+                <span class="command">./show_competences_matrix.sh</span>
+            </div>
+            <div class="output line" style="animation-delay: 2.7s">
+                <h2>Compétences recherchées</h2>
+
+                <div class="matrix">
+                    <div class="matrix-col">
+                        <div class="matrix-header">Administrer</div>
+                        <a href="./Templates/Admin/Admin1.html" class="matrix-item"><span>Niveau 1</span> Assister
+                            l'administrateur du réseau</a>
+                        <a href="#" class="matrix-item"><span>Niveau 2</span> Administrer un réseau</a>
+                        <a href="#" class="matrix-item"><span>Niveau 3</span> Concevoir un réseau</a>
+                    </div>
+
+                    <div class="matrix-col">
+                        <div class="matrix-header">Connecter</div>
+                        <a href="#" class="matrix-item"><span>Niveau 1</span> Découvrir les transmissions et la ToIP</a>
+                        <a href="#" class="matrix-item"><span>Niveau 2</span> Maîtriser les différentes
+                            composantes...</a>
+                        <a href="#" class="matrix-item"><span>Niveau 3</span> Déployer une solution de connexion...</a>
+                    </div>
+
+                    <div class="matrix-col">
+                        <div class="matrix-header">Programmer</div>
+                        <a href="#" class="matrix-item"><span>Niveau 1</span> S'intégrer dans un service
+                            informatique</a>
+                        <a href="#" class="matrix-item"><span>Niveau 2</span> Développer une application R&T</a>
+                        <a href="#" class="matrix-item"><span>Niveau 3</span> Piloter un projet de développement...</a>
+                    </div>
+
+                    <div class="matrix-col">
+                        <div class="matrix-header">Sécuriser</div>
+                        <a href="#" class="matrix-item"><span>Niveau 1</span> Sensibiliser aux vulnérabilités</a>
+                        <a href="#" class="matrix-item"><span>Niveau 2</span> Mettre en œuvre un système
+                            d’information</a>
+                    </div>
+
+                    <div class="matrix-col">
+                        <div class="matrix-header">Surveiller</div>
+                        <a href="#" class="matrix-item"><span>Niveau 1</span> Prendre en main les outils de
+                            surveillance</a>
+                        <a href="#" class="matrix-item"><span>Niveau 2</span> Mettre en œuvre le système de
+                            surveillance</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer / Contact -->
+            <div class="prompt line" id="footer" style="animation-delay: 2.9s">
+                <span class="user">matheo</span><span class="at">@</span><span class="host">linux</span>:<span
+                    class="dir">~/portfolio</span><span class="char">$</span>
+                <span class="command">cat contacts.conf</span>
+            </div>
+            <div class="output line" style="animation-delay: 3.1s">
+                <h2>Gardez contact !</h2>
+                <p>Site de Mathéo crépieux</p>
+
+                <ul class="list">
+                    <li><strong>LinkedIn:</strong> <a
+                            href="https://www.linkedin.com/in/matheo-crepieux-883089340/">Mathéo Crepieux</a></li>
+                    <li><strong>Email:</strong> <a
+                            href="mailto:matheo_crepieux@hotmail.fr">matheo_crepieux@hotmail.fr</a></li>
+                </ul>
+
+                <p style="margin-top: 20px; font-size: 0.9em; color: #777;">
+                    © Copyright Mathéo crepieux
+                </p>
+
+                <p style="margin-top: 20px;">
+                    <a href="#top">[ Retour en haut ]</a>
+                </p>
+            </div>
+
+            <!-- cursor -->
+            <div class="prompt line" style="animation-delay: 3.3s">
+                <span class="user">matheo</span><span class="at">@</span><span class="host">linux</span>:<span
+                    class="dir">~/portfolio</span><span class="char">$</span>
+                <span class="cursor"></span>
+            </div>
+
+        </div>
     </div>
-    
-    <div class="terminal-body" id="terminal-content">
-        
-        <!-- Intro -->
-        <div class="prompt line" id="intro" style="animation-delay: 0.1s">
-            <span class="user">matheo</span><span class="at">@</span><span class="host">linux</span>:<span class="dir">~/portfolio</span><span class="char">$</span>
-            <span class="command">whoami</span>
-        </div>
-        <div class="output line" style="animation-delay: 0.3s">
-            Bonjour<br>
-            <h1>Je suis Mathéo Crepieux</h1>
-            un étudiant à l'IUT de Béthune
-            
-            <div class="image-container">
-                <img src="static/1000001125.jpg" alt="Profile Mathéo">
-            </div>
-            <p>
-                <a href="#about">[ à propos de moi ]</a> &nbsp;&nbsp; 
-                <a href="#footer">[ Contact ]</a>
-            </p>
-        </div>
-
-        <!-- About -->
-        <div class="prompt line" id="about" style="animation-delay: 0.5s">
-            <span class="user">matheo</span><span class="at">@</span><span class="host">linux</span>:<span class="dir">~/portfolio</span><span class="char">$</span>
-            <span class="command">cat cv.txt</span>
-        </div>
-        <div class="output line" style="animation-delay: 0.7s">
-            <h2>Mon CV</h2>
-            <p>
-                Étudiant à l'IUT de Béthune en réseau et Télécom (R&T).<br>
-                Suite à la réussite de mon Bac professionnelle en système numérique,<br>
-                j'aimerais partir en alternance en tant que technicien réseau avec<br>
-                possibilité de devenir <strong>Administrateur réseau</strong>.
-            </p>
-            
-            <h3>Mon parcours</h3>
-            <p>
-                Suite à l'obtention de mon brevet avec mention,<br>
-                je suis parti en Bac Professionnel SN (système numérique)<br>
-                étant le meilleur de ma promotion, je suis parti en BUT R&T (Réseau et télécom)<br>
-                pour pousser mes étude. Grace a mon Bac Professionnel,<br>
-                j'ai effectué plusieurs stage dont :
-            </p>
-            <ul class="list">
-                <li><strong>1 mois</strong> à BM-Tech en tant que technicien réseau.</li>
-                <li><strong>3 stages de 5 semaines</strong> a l'Hôpital de Riaumont en tant que technicien informatique.</li>
-            </ul>
-        </div>
-
-        <!-- Competence -->
-        <div class="prompt line" style="animation-delay: 0.9s">
-            <span class="user">matheo</span><span class="at">@</span><span class="host">linux</span>:<span class="dir">~/portfolio</span><span class="char">$</span>
-            <span class="command">ls -la skills/</span>
-        </div>
-        <div class="output line" style="animation-delay: 1.1s">
-            <h2>compétence</h2>
-            <div class="dir-item">
-                <div class="dir-name">Télécom</div>
-                <div class="dir-desc">peu d'expérience</div>
-            </div>
-            <div class="dir-item">
-                <div class="dir-name">Cisco</div>
-                <div class="dir-desc">Packet Tracer maîtriser et connaissance du CLI</div>
-            </div>
-            <div class="dir-item">
-                <div class="dir-name">Linux</div>
-                <div class="dir-desc">Connaissance des commandes basique</div>
-            </div>
-            <div class="dir-item">
-                <div class="dir-name">HTML</div>
-                <div class="dir-desc">connaissance moyenne</div>
-            </div>
-            <div class="dir-item">
-                <div class="dir-name">Python</div>
-                <div class="dir-desc">tres peu de connaissance</div>
-            </div>
-        </div>
-
-        <!-- Objectif -->
-        <div class="prompt line" style="animation-delay: 1.3s">
-            <span class="user">matheo</span><span class="at">@</span><span class="host">linux</span>:<span class="dir">~/portfolio</span><span class="char">$</span>
-            <span class="command">cat objectives.md</span>
-        </div>
-        <div class="output line" style="animation-delay: 1.5s">
-            <h2>Objectif</h2>
-            <div class="dir-item">
-                <div class="dir-name">Télécom</div>
-                <div class="dir-desc">connaître tous les câblages et pouvoir effectuer des calculs poussés</div>
-            </div>
-            <div class="dir-item">
-                <div class="dir-name">Cisco</div>
-                <div class="dir-desc">Connaissance absolue de Packet tracer et du CLI</div>
-            </div>
-            <div class="dir-item">
-                <div class="dir-name">Linux</div>
-                <div class="dir-desc">Connaissance absolue des commandes et capacité a créé des serveur en tout type.</div>
-            </div>
-            <div class="dir-item">
-                <div class="dir-name">HTML</div>
-                <div class="dir-desc">création de site poussé</div>
-            </div>
-            <div class="dir-item">
-                <div class="dir-name">Python</div>
-                <div class="dir-desc">création de script poussé</div>
-            </div>
-        </div>
-
-        <!-- Qualité -->
-        <div class="prompt line" style="animation-delay: 1.7s">
-            <span class="user">matheo</span><span class="at">@</span><span class="host">linux</span>:<span class="dir">~/portfolio</span><span class="char">$</span>
-            <span class="command">cat qualities.txt</span>
-        </div>
-        <div class="output line" style="animation-delay: 1.9s">
-            <h2>Qualité</h2>
-            <ul class="list">
-                <li>Autonome</li>
-                <li>Cherche a comprendre.</li>
-                <li>Ne s'arrête pas à un échec.</li>
-                <li>Aide les autres.</li>
-                <li>Rigueur</li>
-                <li>Sociable</li>
-            </ul>
-        </div>
-
-        <!-- Hobby -->
-        <div class="prompt line" id="hobby" style="animation-delay: 2.1s">
-            <span class="user">matheo</span><span class="at">@</span><span class="host">linux</span>:<span class="dir">~/portfolio</span><span class="char">$</span>
-            <span class="command">ls -l hobbies/</span>
-        </div>
-        <div class="output line" style="animation-delay: 2.3s">
-            <h2>Hobby</h2>
-            <div class="dir-item">
-                <div class="dir-name">Informatique</div>
-                <div class="dir-desc">L'informatique me passionne, j'y consacre une petite partie de mon temps libre.</div>
-            </div>
-            <div class="dir-item">
-                <div class="dir-name">Jeu Video</div>
-                <div class="dir-desc">J'apprécie beaucoup jouer au jeu vidéo.</div>
-            </div>
-            <div class="dir-item">
-                <div class="dir-name">Manga</div>
-                <div class="dir-desc">En lire me plaît énormément j'en recherche toujours de nouveau.</div>
-            </div>
-            <div class="dir-item">
-                <div class="dir-name">Musique</div>
-                <div class="dir-desc">J'aime écouter de la musique et apprendre à jouer de nouveaux instruments.</div>
-            </div>
-        </div>
-
-        <!-- Compétences recherchées -->
-        <div class="prompt line" id="works" style="animation-delay: 2.5s">
-            <span class="user">matheo</span><span class="at">@</span><span class="host">linux</span>:<span class="dir">~/portfolio</span><span class="char">$</span>
-            <span class="command">./show_competences_matrix.sh</span>
-        </div>
-        <div class="output line" style="animation-delay: 2.7s">
-            <h2>Compétences recherchées</h2>
-            
-            <div class="matrix">
-                <div class="matrix-col">
-                    <div class="matrix-header">Administrer</div>
-                    <a href="./Templates/Admin/Admin1.html" class="matrix-item"><span>Niveau 1</span> Assister l'administrateur du réseau</a>
-                    <a href="#" class="matrix-item"><span>Niveau 2</span> Administrer un réseau</a>
-                    <a href="#" class="matrix-item"><span>Niveau 3</span> Concevoir un réseau</a>
-                </div>
-                
-                <div class="matrix-col">
-                    <div class="matrix-header">Connecter</div>
-                    <a href="#" class="matrix-item"><span>Niveau 1</span> Découvrir les transmissions et la ToIP</a>
-                    <a href="#" class="matrix-item"><span>Niveau 2</span> Maîtriser les différentes composantes...</a>
-                    <a href="#" class="matrix-item"><span>Niveau 3</span> Déployer une solution de connexion...</a>
-                </div>
-                
-                <div class="matrix-col">
-                    <div class="matrix-header">Programmer</div>
-                    <a href="#" class="matrix-item"><span>Niveau 1</span> S'intégrer dans un service informatique</a>
-                    <a href="#" class="matrix-item"><span>Niveau 2</span> Développer une application R&T</a>
-                    <a href="#" class="matrix-item"><span>Niveau 3</span> Piloter un projet de développement...</a>
-                </div>
-                
-                <div class="matrix-col">
-                    <div class="matrix-header">Sécuriser</div>
-                    <a href="#" class="matrix-item"><span>Niveau 1</span> Sensibiliser aux vulnérabilités</a>
-                    <a href="#" class="matrix-item"><span>Niveau 2</span> Mettre en œuvre un système d’information</a>
-                </div>
-                
-                <div class="matrix-col">
-                    <div class="matrix-header">Surveiller</div>
-                    <a href="#" class="matrix-item"><span>Niveau 1</span> Prendre en main les outils de surveillance</a>
-                    <a href="#" class="matrix-item"><span>Niveau 2</span> Mettre en œuvre le système de surveillance</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Footer / Contact -->
-        <div class="prompt line" id="footer" style="animation-delay: 2.9s">
-            <span class="user">matheo</span><span class="at">@</span><span class="host">linux</span>:<span class="dir">~/portfolio</span><span class="char">$</span>
-            <span class="command">cat contacts.conf</span>
-        </div>
-        <div class="output line" style="animation-delay: 3.1s">
-            <h2>Gardez contact !</h2>
-            <p>Site de Mathéo crépieux</p>
-            
-            <ul class="list">
-                <li><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/matheo-crepieux-883089340/">Mathéo Crepieux</a></li>
-                <li><strong>Email:</strong> <a href="mailto:matheo_crepieux@hotmail.fr">matheo_crepieux@hotmail.fr</a></li>
-            </ul>
-            
-            <p style="margin-top: 20px; font-size: 0.9em; color: #777;">
-                © Copyright Mathéo crepieux
-            </p>
-
-            <p style="margin-top: 20px;">
-                <a href="#top">[ Retour en haut ]</a>
-            </p>
-        </div>
-        
-        <!-- cursor -->
-        <div class="prompt line" style="animation-delay: 3.3s">
-            <span class="user">matheo</span><span class="at">@</span><span class="host">linux</span>:<span class="dir">~/portfolio</span><span class="char">$</span>
-            <span class="cursor"></span>
-        </div>
-        
-    </div>
-</div>
 
 </body>
+
 </html>
