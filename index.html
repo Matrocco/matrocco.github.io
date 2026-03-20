@@ -1,375 +1,533 @@
 <!DOCTYPE html>
-<html lang="fr" class="no-js" >
+<html lang="fr" class="no-js">
 <head>
-
-    <!--- basic page needs
-    ================================================== -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Mathéo Crepieux</title>
     <!-- CSS
     ================================================== -->
-    <link rel="stylesheet" href="static/css/vendor.css">
-    <link rel="stylesheet" href="static/css/styles.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap');
 
+        :root {
+            --bg-color: #121212;
+            --terminal-bg: #1e1e1e;
+            --text-main: #33ff33;
+            --text-dim: #22aa22;
+            --text-highlight: #00ffff;
+            --text-warning: #ffaa00;
+            --text-error: #ff3333;
+            --font-family: 'Fira Code', 'Courier New', Courier, monospace;
+        }
 
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-family);
+            margin: 0;
+            padding: 2vw;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            position: relative;
+        }
 
+        /* CRT Scanline Effect */
+        body::after {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 999;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+
+        ::selection {
+            background: var(--text-main);
+            color: var(--bg-color);
+        }
+
+        a {
+            color: var(--text-highlight);
+            text-decoration: none;
+            border-bottom: 1px dashed var(--text-highlight);
+            transition: all 0.2s ease;
+            position: relative;
+            z-index: 1001; /* Above scanlines for clicking */
+        }
+
+        a:hover {
+            color: var(--bg-color);
+            background-color: var(--text-highlight);
+        }
+
+        .terminal-window {
+            background-color: var(--terminal-bg);
+            border: 1px solid #333;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 15px rgba(51, 255, 51, 0.1);
+            width: 100%;
+            max-width: 1000px;
+            overflow: hidden;
+            position: relative;
+            z-index: 10;
+        }
+
+        .terminal-header {
+            background-color: #2b2b2b;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #111;
+        }
+
+        .terminal-buttons {
+            display: flex;
+            gap: 8px;
+            margin-right: 20px;
+        }
+
+        .terminal-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .btn-close { background-color: #ff5f56; }
+        .btn-min { background-color: #ffbd2e; }
+        .btn-max { background-color: #27c93f; }
+
+        .terminal-title {
+            color: #999;
+            font-size: 0.9em;
+            text-align: center;
+            flex-grow: 1;
+            font-family: sans-serif;
+            margin-right: 50px; /* balance buttons */
+        }
+
+        .terminal-body {
+            padding: 25px;
+            max-height: 85vh;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--text-dim) var(--terminal-bg);
+            scroll-behavior: smooth;
+        }
+        
+        .terminal-body::-webkit-scrollbar {
+            width: 8px;
+        }
+        .terminal-body::-webkit-scrollbar-track {
+            background: var(--terminal-bg);
+        }
+        .terminal-body::-webkit-scrollbar-thumb {
+            background-color: var(--text-dim);
+            border-radius: 4px;
+        }
+
+        .prompt {
+            margin-bottom: 10px;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .prompt .user { color: var(--text-main); }
+        .prompt .at { color: #fff; }
+        .prompt .host { color: var(--text-highlight); }
+        .prompt .dir { color: var(--text-warning); }
+        .prompt .char { color: #fff; margin-right: 10px; }
+
+        .command {
+            color: #fff;
+            text-shadow: 0 0 5px rgba(255,255,255,0.3);
+        }
+
+        .output {
+            margin-bottom: 30px;
+            color: #ddd;
+            line-height: 1.6;
+        }
+
+        .output h1, .output h2, .output h3 {
+            color: var(--text-main);
+            margin: 15px 0 10px 0;
+            font-weight: normal;
+        }
+        .output h1 { font-size: 1.8em; text-shadow: 0 0 10px rgba(51, 255, 51, 0.5); }
+        .output h2 { font-size: 1.4em; border-bottom: 1px dashed var(--text-dim); padding-bottom: 5px; display: inline-block;}
+        .output h3 { font-size: 1.1em; color: var(--text-highlight); }
+
+        .output strong {
+            color: var(--text-warning);
+        }
+
+        .image-container img {
+            max-width: 250px;
+            border: 2px solid var(--text-dim);
+            box-shadow: 5px 5px 0 var(--text-dim);
+            margin: 15px 0;
+            filter: grayscale(20%) sepia(20%) hue-rotate(80deg);
+            transition: filter 0.3s ease;
+        }
+        
+        .image-container img:hover {
+            filter: grayscale(0%);
+        }
+
+        .list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .list li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 8px;
+        }
+        .list li::before {
+            content: ">";
+            position: absolute;
+            left: 0;
+            color: var(--text-warning);
+        }
+
+        /* Directory styling equivalent for sections */
+        .dir-item {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 15px;
+            border-left: 2px solid #333;
+            padding-left: 15px;
+            transition: border-color 0.3s ease;
+        }
+        .dir-item:hover {
+            border-color: var(--text-highlight);
+        }
+        .dir-name {
+            color: var(--text-highlight);
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+        .dir-name::before {
+            content: "./";
+            opacity: 0.5;
+        }
+        .dir-desc {
+            color: #aaa;
+        }
+
+        /* Matrix Table for Competences */
+        .matrix {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .matrix-col {
+            border: 1px solid #333;
+            background: #1a1a1a;
+        }
+        .matrix-header {
+            background: #2b2b2b;
+            color: var(--text-warning);
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            border-bottom: 1px solid #333;
+        }
+        .matrix-item {
+            padding: 10px;
+            border-bottom: 1px dashed #333;
+            font-size: 0.9em;
+            display: block;
+            color: #ccc;
+            position: relative;
+            z-index: 1001; /* Clickable above scanlines */
+        }
+        .matrix-item:last-child {
+            border-bottom: none;
+        }
+        .matrix-item span {
+            color: var(--text-error);
+            font-size: 0.8em;
+            display: block;
+            margin-bottom: 3px;
+        }
+        .matrix-item:hover {
+            background: #222;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 1.2em;
+            background-color: var(--text-main);
+            vertical-align: middle;
+            animation: blink 1s step-end infinite;
+            margin-left: 5px;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Terminal intro animation */
+        .line {
+            opacity: 0;
+            animation: fadeIn 0.1s forwards;
+        }
+        
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+    </style>
 </head>
-
-
 <body id="top">
 
+<div class="terminal-window">
+    <div class="terminal-header">
+        <div class="terminal-buttons">
+            <div class="terminal-button btn-close"></div>
+            <div class="terminal-button btn-min"></div>
+            <div class="terminal-button btn-max"></div>
+        </div>
+        <div class="terminal-title">matheo@linux: /home/matheo/portfolio</div>
+    </div>
     
- 
-
-    <!-- page wrap
-    ================================================== -->
-    <div id="page" class="s-pagewrap">
-
-
-        <!-- # site header 
-        ================================================== -->
-        <header class="s-header">
-            <div class="row s-header__inner">
-                <nav class="s-header__nav">    
-                    <ul class="s-header__menu-links">
-                        <li class="current"><a class="smoothscroll" href="#intro">Intro</a></li>
-                        <li><a class="smoothscroll" href="#about">à propos</a></li>
-                        <li><a class="smoothscroll" href="#hobby">hobby</a></li>
-                        <li><a class="smoothscroll" href="#works">Compétence</a></li>
-                        <li><a class="smoothscroll" href="#footer">Contact</a></li>
-                    </ul> <!-- s-header__menu-links -->    
-                </nav> <!-- end s-header__nav -->
-
-            </div> <!-- end s-header__inner -->
-        </header> <!-- end s-header -->
-
-
-        <!-- # intro
-        ================================================== -->
-        <section id="intro" class="s-intro target-section">
-
-            <div class="row s-intro__content width-sixteen-col">
-                <div class="column lg-12 s-intro__content-inner grid-block grid-16">
-                    
-                    <div class="s-intro__content-text">
-
-                        <div class="s-intro__content-pretitle text-pretitle">Bonjour</div>
-                        <h1 class="s-intro__content-title">
-                        Je suis Mathéo Crepieux <br>
-                        un étudiant <br>
-                        à l'IUT de Béthune 
-                        </h1>                            
-
-                        <div class="s-intro__content-btns">
-                            <a class="smoothscroll btn" href="#about">à propos de moi</a>
-                            <a class="smoothscroll btn btn--stroke" href="#footer">Contact</a>
-                        </div> <!-- s-intro__content-btns -->   
-
-                    </div> <!-- s-intro__content-text -->                     
-                    
-                </div> <!-- s-intro__content-inner -->  
-            </div> <!-- s-intro__content -->
-
-            <ul class="s-intro__social social-list">
-            </ul> <!-- end s-intro__social -->
-
-            <div class="s-intro__content-media">                               
-                <img src="static/1000001125.jpg"alt="">
-            </div> <!-- s-intro__content-media -->                
-            <div class="s-intro__scroll-down">
-                <a href="#about" class="smoothscroll">
-                    <div class="scroll-icon">
-                       
-                    </div>
-                    <span class="scroll-text u-screen-reader-text">Scroll Down</span>
-                </a>
-            </div> <!-- s-intro__scroll-down -->
-
-        </section> <!-- end s-intro -->
-
- <!-- # about
-        ================================================== -->
-        <section id="about" class="s-about target-section">
-
-            <div class="row s-about__content">
-                <div class="column xl-12">    
-                    
-                    <div class="section-header" data-num="01">
-                        <h2 class="text-display-title">Mon CV</h2>
-                    </div> <!-- end section-header -->
-                    
-                    <p class="attention-getter">
-                        Étudiant à l'IUT de Béthune en réseau et Télécom (R&T). 
-                        Suite à la réussite de mon Bac professionnelle en système numérique,
-                         j'aimerais partir en alternance en tant que technicien réseau avec 
-                         possibilité de devenir <strong>Administrateur réseau</strong>
-                    </p>
-                    <h3>Mon parcours</h3>
-                    <p class="attention-getter">
-                        Suite à l'obtention de mon brevet avec mention,
-                        je suis parti en Bac Professionnel SN (système numérique)
-                        étant le meilleur de ma promotion, je suis parti en BUT R&T (Réseau et télécom) 
-                        pour pousser mes étude. Grace a mon Bac Professionnel,
-                        j'ai effectué plusieurs stage dont :<BR>
-                    <strong>1  mois</strong> à BM-Tech en tant que technicien réseau. <br>
-                    <strong>3 stages de 5 semaines</strong> a l'Hôpital de Riaumont en tant que technicien informatique.      
-                    </p>
-
-                    <div class="grid-list-items s-about__blocks">
-
-                        <div class="grid-list-items__item s-about__block">
-                            <h4 class="s-about__block-title">competence</h4>
-                            <ul class="s-about__list">
-                                <li>
-                                    Télécom
-                                    <span>peu d'expérience</span>
-                                </li>
-                                <li>
-                                    Cisco 
-                                    <span>Packet Tracer maîtriser et connaissance du CLI</span>
-                                </li>
-                                <li>
-                                    Linux 
-                                    <span>Connaissance des commandes basique</span>
-                                </li>
-                                <li>
-                                    HTML
-                                    <span>connaissance moyenne</span>
-                                </li>
-                                <li>
-                                    Python
-                                    <span>tres peu de connaissance </span>
-                                </li>
-                            </ul>
-                        </div> <!--end s-about__block -->
-                        
-
-                        <div class="grid-list-items__item s-about__block">
-                            <h4 class="s-about__block-title">Objectif</h4>
-
-                            <ul class="s-about__list">
-                                <li>
-                                    <a href="#0">
-                                        Télécom
-                                        <span> connaître tous les câblages et pouvoir effectuer des calculs poussés</span>
-                                    </a>                                        
-                                </li>
-                                <li>
-                                    <a href="#0">
-                                        Cisco
-                                        <span>Connaissance absolue de Packet tracer et du CLI</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#0">
-                                        Linux
-                                        <span>Linux Connaissance absolue des commandes et capacité a créé des serveur en tout type.</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#0">
-                                        HTML
-                                        <span>création de site poussé</span>
-                                    </a>
-                                </li><li>
-                                    <a href="#0">
-                                        Python 
-                                        <span>création de script poussé</span>
-                                    </a>                                        
-                                </li>
-                            </ul>
-                        </div> <!--end s-about__block -->
-                        
-                        
-                        <div class="grid-list-items__item s-about__block">
-                            <h4 class="s-about__block-title">Qualité</h4>
-
-                            <ul class="s-about__list">
-                                <li>
-                                    Autonome 
-                                </li>
-                                <li>
-                                    Cherche a comprendre.
-                                </li> 
-                                <li>
-                                    Ne s'arrête pas à un échec.
-                                </li>
-                                <li>
-                                    Aide les autres.
-                                </li>
-                                <li>
-                                    Rigueur
-                                </li>
-                                <li>
-                                    Sociable 
-                                </li>
-                            </ul>
-                        </div> <!--end s-about__block -->
-
-                    </div> <!-- grid-list-items -->
-
-                </div> <!--end column -->
-            </div> <!--end s-about__content -->
+    <div class="terminal-body" id="terminal-content">
+        
+        <!-- Intro -->
+        <div class="prompt line" id="intro" style="animation-delay: 0.1s">
+            <span class="user">matheo</span><span class="at">@</span><span class="host">linux</span>:<span class="dir">~/portfolio</span><span class="char">$</span>
+            <span class="command">whoami</span>
+        </div>
+        <div class="output line" style="animation-delay: 0.3s">
+            Bonjour<br>
+            <h1>Je suis Mathéo Crepieux</h1>
+            un étudiant à l'IUT de Béthune
             
-        </section> <!-- end s-about -->   
+            <div class="image-container">
+                <img src="static/1000001125.jpg" alt="Profile Mathéo">
+            </div>
+            <p>
+                <a href="#about">[ à propos de moi ]</a> &nbsp;&nbsp; 
+                <a href="#footer">[ Contact ]</a>
+            </p>
+        </div>
 
-        <section id="hobby" class="hobbies">
-            <div class="hobby">
-                <h2>Informatique</h2>
-                <p>
-                L'informatique me passionne, j'y consacre une petite partie de mon temps libre.</p>
-            </div>
-    
-            <div class="hobby">
-                <h2>Jeu Video</h2>
-                <p>J'apprécie beaucoup jouer au jeu vidéo. </p>
-            </div>
+        <!-- About -->
+        <div class="prompt line" id="about" style="animation-delay: 0.5s">
+            <span class="user">matheo</span><span class="at">@</span><span class="host">linux</span>:<span class="dir">~/portfolio</span><span class="char">$</span>
+            <span class="command">cat cv.txt</span>
+        </div>
+        <div class="output line" style="animation-delay: 0.7s">
+            <h2>Mon CV</h2>
+            <p>
+                Étudiant à l'IUT de Béthune en réseau et Télécom (R&T).<br>
+                Suite à la réussite de mon Bac professionnelle en système numérique,<br>
+                j'aimerais partir en alternance en tant que technicien réseau avec<br>
+                possibilité de devenir <strong>Administrateur réseau</strong>.
+            </p>
             
-            <div class="hobby">
-                <h2>Manga</h2>
-                <p>En lire me plaît énormément j'en recherche toujours de nouveau. </p>
+            <h3>Mon parcours</h3>
+            <p>
+                Suite à l'obtention de mon brevet avec mention,<br>
+                je suis parti en Bac Professionnel SN (système numérique)<br>
+                étant le meilleur de ma promotion, je suis parti en BUT R&T (Réseau et télécom)<br>
+                pour pousser mes étude. Grace a mon Bac Professionnel,<br>
+                j'ai effectué plusieurs stage dont :
+            </p>
+            <ul class="list">
+                <li><strong>1 mois</strong> à BM-Tech en tant que technicien réseau.</li>
+                <li><strong>3 stages de 5 semaines</strong> a l'Hôpital de Riaumont en tant que technicien informatique.</li>
+            </ul>
+        </div>
+
+        <!-- Competence -->
+        <div class="prompt line" style="animation-delay: 0.9s">
+            <span class="user">matheo</span><span class="at">@</span><span class="host">linux</span>:<span class="dir">~/portfolio</span><span class="char">$</span>
+            <span class="command">ls -la skills/</span>
+        </div>
+        <div class="output line" style="animation-delay: 1.1s">
+            <h2>compétence</h2>
+            <div class="dir-item">
+                <div class="dir-name">Télécom</div>
+                <div class="dir-desc">peu d'expérience</div>
             </div>
-    
-            <div class="hobby">
-                <h2>Musique</h2>
-                <p>J'aime écouter de la musique et apprendre à jouer de nouveaux instruments.</p>
+            <div class="dir-item">
+                <div class="dir-name">Cisco</div>
+                <div class="dir-desc">Packet Tracer maîtriser et connaissance du CLI</div>
             </div>
-        </section>
-   
-<!-- # works
-        ================================================== -->
- <section id="works" class="s-works target-section">
-    <div class="row">
-        <div class="column xl-12">
-            <div class="section-header" data-num="02">
-                <h2 class="text-display-title">Compétences recherchées</h2>
+            <div class="dir-item">
+                <div class="dir-name">Linux</div>
+                <div class="dir-desc">Connaissance des commandes basique</div>
+            </div>
+            <div class="dir-item">
+                <div class="dir-name">HTML</div>
+                <div class="dir-desc">connaissance moyenne</div>
+            </div>
+            <div class="dir-item">
+                <div class="dir-name">Python</div>
+                <div class="dir-desc">tres peu de connaissance</div>
             </div>
         </div>
-    </div>
 
+        <!-- Objectif -->
+        <div class="prompt line" style="animation-delay: 1.3s">
+            <span class="user">matheo</span><span class="at">@</span><span class="host">linux</span>:<span class="dir">~/portfolio</span><span class="char">$</span>
+            <span class="command">cat objectives.md</span>
+        </div>
+        <div class="output line" style="animation-delay: 1.5s">
+            <h2>Objectif</h2>
+            <div class="dir-item">
+                <div class="dir-name">Télécom</div>
+                <div class="dir-desc">connaître tous les câblages et pouvoir effectuer des calculs poussés</div>
+            </div>
+            <div class="dir-item">
+                <div class="dir-name">Cisco</div>
+                <div class="dir-desc">Connaissance absolue de Packet tracer et du CLI</div>
+            </div>
+            <div class="dir-item">
+                <div class="dir-name">Linux</div>
+                <div class="dir-desc">Connaissance absolue des commandes et capacité a créé des serveur en tout type.</div>
+            </div>
+            <div class="dir-item">
+                <div class="dir-name">HTML</div>
+                <div class="dir-desc">création de site poussé</div>
+            </div>
+            <div class="dir-item">
+                <div class="dir-name">Python</div>
+                <div class="dir-desc">création de script poussé</div>
+            </div>
+        </div>
 
-    <div class="grid-container">
-        <div class="header col-admin">Administrer</div>
-        <div class="header col-connect">Connecter</div>
-        <div class="header col-prog">Programmer</div>
-        <div class="header col-orch">Sécuriser</div>
-        <div class="header col-dev">Surveiller</div>
+        <!-- Qualité -->
+        <div class="prompt line" style="animation-delay: 1.7s">
+            <span class="user">matheo</span><span class="at">@</span><span class="host">linux</span>:<span class="dir">~/portfolio</span><span class="char">$</span>
+            <span class="command">cat qualities.txt</span>
+        </div>
+        <div class="output line" style="animation-delay: 1.9s">
+            <h2>Qualité</h2>
+            <ul class="list">
+                <li>Autonome</li>
+                <li>Cherche a comprendre.</li>
+                <li>Ne s'arrête pas à un échec.</li>
+                <li>Aide les autres.</li>
+                <li>Rigueur</li>
+                <li>Sociable</li>
+            </ul>
+        </div>
 
-        <a href="./Templates/Admin/Admin1.html" class="card admin-1">
-            <span>Niveau 1</span> Assister l'administrateur du réseau
-        </a>
-        <a href="#" class="card connect-1">
-            <span>Niveau 1</span> Découvrir les transmissions et la ToIP
-        </a>
-        <a href="#" class="card prog-1">
-            <span>Niveau 1</span> S'intégrer dans un service informatique
-        </a>
-        <div class="empty"></div> <div class="empty"></div>
+        <!-- Hobby -->
+        <div class="prompt line" id="hobby" style="animation-delay: 2.1s">
+            <span class="user">matheo</span><span class="at">@</span><span class="host">linux</span>:<span class="dir">~/portfolio</span><span class="char">$</span>
+            <span class="command">ls -l hobbies/</span>
+        </div>
+        <div class="output line" style="animation-delay: 2.3s">
+            <h2>Hobby</h2>
+            <div class="dir-item">
+                <div class="dir-name">Informatique</div>
+                <div class="dir-desc">L'informatique me passionne, j'y consacre une petite partie de mon temps libre.</div>
+            </div>
+            <div class="dir-item">
+                <div class="dir-name">Jeu Video</div>
+                <div class="dir-desc">J'apprécie beaucoup jouer au jeu vidéo.</div>
+            </div>
+            <div class="dir-item">
+                <div class="dir-name">Manga</div>
+                <div class="dir-desc">En lire me plaît énormément j'en recherche toujours de nouveau.</div>
+            </div>
+            <div class="dir-item">
+                <div class="dir-name">Musique</div>
+                <div class="dir-desc">J'aime écouter de la musique et apprendre à jouer de nouveaux instruments.</div>
+            </div>
+        </div>
 
-        <a href="#" class="card admin-2">
-            <span>Niveau 2</span> Administrer un réseau
-        </a>
-        <a href="#" class="card connect-2">
-            <span>Niveau 2</span> Maîtriser les différentes composantes...
-        </a>
-        <a href="#" class="card prog-2">
-            <span>Niveau 2</span> Développer une application R&T
-        </a>
-        <a href="#" class="card orch-1">
-            <span>Niveau 1</span> Sensibiliser aux vulnérabilités 
-        </a>
-        <a href="#" class="card dev-1">
-            <span>Niveau 1</span> Prendre en main les outils de surveillance
-        </a>
-
-        <a href="#" class="card admin-3">
-            <span>Niveau 3</span> Concevoir un réseau
-        </a>
-        <a href="#" class="card connect-3">
-            <span>Niveau 3</span> Déployer une solution de connexion...
-        </a>
-        <a href="#" class="card prog-3">
-            <span>Niveau 3</span> Piloter un projet de développement...
-        </a>
-        <a href="#" class="card orch-2">
-            <span>Niveau 2</span> Mettre en œuvre un système d’information
-        </a>
-        <a href="#" class="card dev-2">
-            <span>Niveau 2</span> Mettre en œuvre le système de surveillance
-        </a>
-    </div>
- </section>
-
-
- <!-- # footer 
-        ================================================== -->
-        <footer id="footer" class="s-footer target-section">
-
-            <div class="row">
-                <div class="column lg-12">
-                    <div class="section-header light-on-dark" data-num="03">
-                        <h2 class="text-display-title">Gardez contact !</h2>
-                    </div> <!-- end section-header -->
+        <!-- Compétences recherchées -->
+        <div class="prompt line" id="works" style="animation-delay: 2.5s">
+            <span class="user">matheo</span><span class="at">@</span><span class="host">linux</span>:<span class="dir">~/portfolio</span><span class="char">$</span>
+            <span class="command">./show_competences_matrix.sh</span>
+        </div>
+        <div class="output line" style="animation-delay: 2.7s">
+            <h2>Compétences recherchées</h2>
+            
+            <div class="matrix">
+                <div class="matrix-col">
+                    <div class="matrix-header">Administrer</div>
+                    <a href="./Templates/Admin/Admin1.html" class="matrix-item"><span>Niveau 1</span> Assister l'administrateur du réseau</a>
+                    <a href="#" class="matrix-item"><span>Niveau 2</span> Administrer un réseau</a>
+                    <a href="#" class="matrix-item"><span>Niveau 3</span> Concevoir un réseau</a>
+                </div>
+                
+                <div class="matrix-col">
+                    <div class="matrix-header">Connecter</div>
+                    <a href="#" class="matrix-item"><span>Niveau 1</span> Découvrir les transmissions et la ToIP</a>
+                    <a href="#" class="matrix-item"><span>Niveau 2</span> Maîtriser les différentes composantes...</a>
+                    <a href="#" class="matrix-item"><span>Niveau 3</span> Déployer une solution de connexion...</a>
+                </div>
+                
+                <div class="matrix-col">
+                    <div class="matrix-header">Programmer</div>
+                    <a href="#" class="matrix-item"><span>Niveau 1</span> S'intégrer dans un service informatique</a>
+                    <a href="#" class="matrix-item"><span>Niveau 2</span> Développer une application R&T</a>
+                    <a href="#" class="matrix-item"><span>Niveau 3</span> Piloter un projet de développement...</a>
+                </div>
+                
+                <div class="matrix-col">
+                    <div class="matrix-header">Sécuriser</div>
+                    <a href="#" class="matrix-item"><span>Niveau 1</span> Sensibiliser aux vulnérabilités</a>
+                    <a href="#" class="matrix-item"><span>Niveau 2</span> Mettre en œuvre un système d’information</a>
+                </div>
+                
+                <div class="matrix-col">
+                    <div class="matrix-header">Surveiller</div>
+                    <a href="#" class="matrix-item"><span>Niveau 1</span> Prendre en main les outils de surveillance</a>
+                    <a href="#" class="matrix-item"><span>Niveau 2</span> Mettre en œuvre le système de surveillance</a>
                 </div>
             </div>
+        </div>
 
-            <div class="row s-footer__content">
-
-                <div class="column xl-6 md-12 s-footer__block s-footer__about">                    
-                    <p class="attention-getter">
-                        Site de Mathéo crépieux avec le template Hudson et l'assistance de chat GPT  
-                    </p>               
-                </div> <!-- end section-footer__about -->
-
-                <div class="column xl-6 md-12 s-footer__block s-footer__site-links">
-                    <div class="row">
-                        <div class="column xl-4 lg-5 md-6 tab-12">
-                            <h5>Me contacter</h5>
-                            <ul class="link-list">
-                                <li><a href="https://www.linkedin.com/in/matheo-crepieux-883089340/">LinkedIn</a></li>
-                                <li><a href="https://www.instagram.com/mcrepieux/">Instagram</a></li>
-                            </ul>
-                        </div>
-                        <div class="column xl-6 md-6 tab-12">
-                            <h5>Contactez moi !</h5>
-                            <ul class="link-list">
-                                <li><a href="mailto:#0">matheo_crepieux@hotmail.fr</a></li>
-                                <li><a href="">0750032605</a></li>
-                            </ul> 
-                        </div>
-                    </div>                    
-                </div> <!-- end section-footer__site-links -->
-
+        <!-- Footer / Contact -->
+        <div class="prompt line" id="footer" style="animation-delay: 2.9s">
+            <span class="user">matheo</span><span class="at">@</span><span class="host">linux</span>:<span class="dir">~/portfolio</span><span class="char">$</span>
+            <span class="command">cat contacts.conf</span>
+        </div>
+        <div class="output line" style="animation-delay: 3.1s">
+            <h2>Gardez contact !</h2>
+            <p>Site de Mathéo crépieux avec le template Hudson et l'assistance de chat GPT</p>
             
-
-                <div class="column xl-6 lg-12">
-                    <p class="ss-copyright">
-                        <span>© Copyright Mathéo crepieux</span> 
-                        
-                    </p>
-                </div>
-
-            </div> <!-- end section-footer__bottom -->          
-
-            <div class="ss-go-top">
-                <a class="smoothscroll" title="Back to Top" href="#top">                 
-                   
-                </a>                                
-                <span>Back To Top</span>   
-            </div> <!-- end ss-go-top -->
+            <ul class="list">
+                <li><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/matheo-crepieux-883089340/">Mathéo Crepieux</a></li>
+                <li><strong>Instagram:</strong> <a href="https://www.instagram.com/mcrepieux/">mcrepieux</a></li>
+                <li><strong>Email:</strong> <a href="mailto:matheo_crepieux@hotmail.fr">matheo_crepieux@hotmail.fr</a></li>
+                <li><strong>Téléphone:</strong> 0750032605</li>
+            </ul>
             
-        </footer> <!-- end s-footer -->
+            <p style="margin-top: 20px; font-size: 0.9em; color: #777;">
+                © Copyright Mathéo crepieux
+            </p>
 
-    </div> <!-- end page-wrap -->
-
-
-
-       
-    <!-- Java Scrip 
-    ================================================== -->
-    <script src="static/js/plugins.js"></script>
-    <script src="static/js/main.js"></script>
+            <p style="margin-top: 20px;">
+                <a href="#top">[ Retour en haut ]</a>
+            </p>
+        </div>
+        
+        <!-- cursor -->
+        <div class="prompt line" style="animation-delay: 3.3s">
+            <span class="user">matheo</span><span class="at">@</span><span class="host">linux</span>:<span class="dir">~/portfolio</span><span class="char">$</span>
+            <span class="cursor"></span>
+        </div>
+        
+    </div>
+</div>
 
 </body>
 </html>
