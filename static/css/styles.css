@@ -163,7 +163,7 @@
             border: 2px solid var(--text-dim);
             box-shadow: 5px 5px 0 var(--text-dim);
             margin: 15px 0;
-            filter: hue-rotate(80deg);
+            filter: rotate(80deg);
             transition: filter 0.3s ease;
         }
         
